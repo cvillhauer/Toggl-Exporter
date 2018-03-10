@@ -1,0 +1,20 @@
+<h1>Authenticate</h1>
+<div *ngIf="!user">
+    <h3>Please log in:</h3>
+    <form name="loginForm">
+        <label>Email:</label>
+        <input name="email" class="form-control" type="email" [(ngModel)]="email" />
+        <br />
+        <label>Password:</label>
+        <input name="password" class="form-control" type="password" [(ngModel)]="password" />
+        <br />
+        <button type="submit" (click)="authenticate()">Login</button>
+    </form>
+</div>
+<div *ngIf="user">
+    <h3>Authenticated!</h3>
+    Id: {{user.id}}
+    <br> Username: {{user.fullname}}
+    <br>
+    <img src={{user.image_url}} />
+</div>
