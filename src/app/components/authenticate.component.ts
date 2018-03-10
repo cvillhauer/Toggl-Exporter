@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
@@ -20,7 +20,8 @@ export class AuthenticateComponent {
     private email = '';
     private password = 'api_token';
 
-    public user: User;
+    @Input() user: User;
+    @Output() onAuthenticated = new EventEmitter<User>();
 
     constructor(private http: Http) { }
 
@@ -29,13 +30,18 @@ export class AuthenticateComponent {
     }
 
     authenticate(): void {
-        this.getUserData().then(user => this.user = user);
+        this.getUserData()
+        .then(user => this.user = user)
+        .then(
+            () => this.onAuthenticated.emit(this.user),
+            (err) => console.log(err)
+        );
     }
 
     getUserData(): Promise<User> {
         this.headers.append('Content-Type', 'application/json');
         this.headers.append('Authorization', ('Basic ' + btoa(this.email + ':' + this.password)));
-        return this.http.get("https://www.toggl.com/api/v8/me", { headers: this.headers })
+        return this.http.get("https://www.toggl.com/api/v8/me?with_related_data=true", { headers: this.headers })
             .toPromise()
             .then(response => response.json().data as User)
             .catch(this.handleError);
