@@ -5,7 +5,7 @@
         <th *ngFor="let date of currentMonth.dates">{{ date }}</th>
         <tr *ngFor="let project of currentMonth.projects">
             <td>{{ project.description }}</td>
-            <td *ngFor="let day of project.days">{{ day.hours }}</td>
+            <td *ngFor="let day of project.days">{{ day.hours | number : '1.2-2' }}</td>
         </tr>
     </table>
 </div>

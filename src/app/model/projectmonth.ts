@@ -1,12 +1,21 @@
 import { ProjectDay } from './projectday';
+import { Project } from './project';
 
 export class ProjectMonth {
+    id: number;             //Project Id
     description: string;    //Project description
     color: string;          //Hex code for the color
     days: ProjectDay[];     //Array of project hours per day
 
-    constructor(description: string, color: string) {
+    constructor(id: number, description: string, color: string, numberOfDays: number) {
+        this.id = id;
         this.description = description;
         this.color = color;
+        this.days = [];
+
+        for(let i: number = 1; i <= numberOfDays; i++)
+        {
+            this.days.push(new ProjectDay(i, 0));
+        }
     }
 }

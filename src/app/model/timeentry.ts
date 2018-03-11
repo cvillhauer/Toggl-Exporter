@@ -5,6 +5,7 @@ export class TimeEntry {
     description: string;
     start: string; //ISO 8601 date and time
     stop: string; //ISO 8601 date and time
-    duration: number; //negative if timer is still running
+    duration: number; //In seconds - negative if timer is still running
+    pid: number; //Project Id
     project: Project;
 }
