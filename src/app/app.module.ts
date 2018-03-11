@@ -6,9 +6,10 @@ import { HttpModule }    from '@angular/http';
 import { AppComponent } from './app.component';
 
 import { AuthenticateComponent } from './components/authenticate.component';
+import { MonthViewComponent } from './components/monthview.component';
 
 @NgModule({
-  declarations: [AppComponent, AuthenticateComponent],
+  declarations: [AppComponent, AuthenticateComponent, MonthViewComponent],
   imports: [BrowserModule, FormsModule, HttpModule],
   providers: [],
   bootstrap: [AppComponent]

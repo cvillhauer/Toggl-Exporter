@@ -1,15 +1,9 @@
-<h1>2018</h1>
-<ul>
-    <li><button>January</button></li>
-    <li><button>Februar</button></li>
-    <li><button>March</button></li>
-    <li><button>April</button></li>
-    <li><button>May</button></li>
-    <li><button>June</button></li>
-    <li><button>July</button></li>
-    <li><button>August</button></li>
-    <li><button>September</button></li>
-    <li><button>October</button></li>
-    <li><button>November</button></li>
-    <li><button>December</button></li>
-</ul>
+<h3>{{ month.name }}</h3>
+<table border="1" *ngIf="month.projects.length > 0">
+    <th>Project</th>
+    <th *ngFor="let date of month.dates">{{ date }}</th>
+    <tr *ngFor="let project of month.projects">
+        <td>{{ project.description }}</td>
+        <td *ngFor="let day of project.days">{{ day.hours }}</td>
+    </tr>
+</table>
