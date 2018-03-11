@@ -1,8 +1,8 @@
-<h3>{{ month.name }}</h3>
-<table border="1" *ngIf="month.projects.length > 0">
+<h3>{{ currentMonth.name }}</h3>
+<table border="1" *ngIf="currentMonth.projects.length > 0">
     <th>Project</th>
-    <th *ngFor="let date of month.dates">{{ date }}</th>
-    <tr *ngFor="let project of month.projects">
+    <th *ngFor="let date of currentMonth.dates">{{ date }}</th>
+    <tr *ngFor="let project of currentMonth.projects">
         <td>{{ project.description }}</td>
         <td *ngFor="let day of project.days">{{ day.hours }}</td>
     </tr>

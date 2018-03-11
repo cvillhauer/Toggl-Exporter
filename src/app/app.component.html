@@ -2,4 +2,4 @@
 
 <div *ngIf="currentUser.fullname">The user is: {{ currentUser.fullname }}</div>
 
-<monthview *ngIf="currentUser.api_token" [(month)]="currentMonth"></monthview>
+<monthview *ngIf="currentUser.api_token" [(user)]="currentUser"></monthview>
