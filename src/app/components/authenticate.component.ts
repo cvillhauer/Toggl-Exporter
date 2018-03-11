@@ -41,7 +41,7 @@ export class AuthenticateComponent {
     getUserData(): Promise<User> {
         this.headers.append('Content-Type', 'application/json');
         this.headers.append('Authorization', ('Basic ' + btoa(this.email + ':' + this.password)));
-        return this.http.get("https://www.toggl.com/api/v8/me?with_related_data=true", { headers: this.headers })
+        return this.http.get("https://www.toggl.com/api/v8/me", { headers: this.headers })
             .toPromise()
             .then(response => response.json().data as User)
             .catch(this.handleError);

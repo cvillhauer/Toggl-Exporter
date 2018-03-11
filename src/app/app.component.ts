@@ -17,5 +17,9 @@ export class AppComponent {
 
   onAuthenticated(newUser: User) {
     this.currentUser = newUser;
+    if(this.currentUser.workspaces.length > 0)
+    {
+      this.currentUser.wid = this.currentUser.workspaces[0].id;
+    }
   }
 }
