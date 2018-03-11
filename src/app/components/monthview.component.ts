@@ -91,4 +91,8 @@ export class MonthViewComponent {
         return Promise.reject(error.message || error);
     }
 
+    filterEmptyProjects(): ProjectMonth[] {
+        return this.currentMonth.projects.filter(x => x.getTotalHours() > 0);
+    }
+
 }

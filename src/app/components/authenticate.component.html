@@ -1,4 +1,3 @@
-<h1>Authenticate</h1>
 <div *ngIf="!user.api_token">
     <h3>Please log in:</h3>
     <form name="loginForm">
@@ -12,9 +11,5 @@
     </form>
 </div>
 <div *ngIf="user.api_token">
-    <h3>Authenticated!</h3>
-    Id: {{user.id}}
-    <br> Username: {{user.fullname}}
-    <br>
-    <img src={{user.image_url}} />
+    <h3>Authenticated as: &nbsp; <img src={{user.image_url}} height="20" /> {{ user.fullname }}</h3>
 </div>

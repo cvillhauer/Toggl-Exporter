@@ -8,11 +8,15 @@ table {
 }
 
 td, th {
-    border: 1px solid #DDDDDD;
+    border: 1px solid #CCCCCC;
     text-align: center;
     padding: 8px;
 }
 
 tr:nth-child(even) {
-    background-color: #EEEEEE;
+    background-color: #DEDEDE;
+}
+
+tr:nth-child(odd) {
+    background-color: #EDEDED;
 }

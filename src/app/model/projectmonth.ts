@@ -13,9 +13,16 @@ export class ProjectMonth {
         this.color = color;
         this.days = [];
 
-        for(let i: number = 1; i <= numberOfDays; i++)
-        {
+        for (let i: number = 1; i <= numberOfDays; i++) {
             this.days.push(new ProjectDay(i, 0));
         }
+    }
+
+    getTotalHours(): number {
+        let total: number = 0;
+        for (let day of this.days) {
+            total += day.hours;
+        }
+        return total;
     }
 }

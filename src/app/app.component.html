@@ -1,5 +1,5 @@
-<authenticate [(user)]="currentUser" (onAuthenticated)="onAuthenticated($event)"></authenticate>
+<h1>Courtney's Toggl Exporter</h1>
 
-<div *ngIf="currentUser.fullname">The user is: {{ currentUser.fullname }}</div>
+<authenticate [(user)]="currentUser" (onAuthenticated)="onAuthenticated($event)"></authenticate>
 
 <monthview *ngIf="currentUser.api_token" [(user)]="currentUser"></monthview>
