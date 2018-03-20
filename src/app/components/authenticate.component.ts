@@ -20,6 +20,8 @@ export class AuthenticateComponent {
     private email = '';
     private password = 'api_token';
 
+    private proxyUrl = "https://cors-anywhere.herokuapp.com/";
+
     @Input() user: User;
     @Output() onAuthenticated = new EventEmitter<User>();
 
@@ -41,7 +43,7 @@ export class AuthenticateComponent {
     getUserData(): Promise<User> {
         this.headers.append('Content-Type', 'application/json');
         this.headers.append('Authorization', ('Basic ' + btoa(this.email + ':' + this.password)));
-        return this.http.get("https://www.toggl.com/api/v8/me", { headers: this.headers })
+        return this.http.get(this.proxyUrl + "https://www.toggl.com/api/v8/me", { headers: this.headers })
             .toPromise()
             .then(response => response.json().data as User)
             .catch(this.handleError);

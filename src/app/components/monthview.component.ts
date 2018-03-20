@@ -17,6 +17,7 @@ import { TimeEntry } from '../model/timeentry';
 
 export class MonthViewComponent {
     @Input() user: User;
+    private proxyUrl = "https://cors-anywhere.herokuapp.com/";
     public currentMonth: Month;
 
     private headers = new Headers();
@@ -43,14 +44,14 @@ export class MonthViewComponent {
     }
 
     getProjectData(): Promise<Project[]> {
-        return this.http.get("https://www.toggl.com/api/v8/workspaces/" + this.user.wid + "/projects", { headers: this.headers })
+        return this.http.get(this.proxyUrl + "https://www.toggl.com/api/v8/workspaces/" + this.user.wid + "/projects", { headers: this.headers })
             .toPromise()
             .then(response => response.json() as Project[])
             .catch(this.handleError);
     }
 
     getTimeData(): Promise<TimeEntry[]> {
-        return this.http.get("https://www.toggl.com/api/v8/time_entries?start_date=2018-03-01T00%3A00%3A00%2B00%3A00&end_date=2018-04-01T00%3A00%3A00%2B00%3A00", { headers: this.headers })
+        return this.http.get(this.proxyUrl + "https://www.toggl.com/api/v8/time_entries?start_date=2018-03-01T00%3A00%3A00%2B00%3A00&end_date=2018-04-01T00%3A00%3A00%2B00%3A00", { headers: this.headers })
             .toPromise()
             .then(response => response.json() as TimeEntry[])
             .catch(this.handleError);
