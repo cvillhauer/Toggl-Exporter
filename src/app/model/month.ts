@@ -4,11 +4,13 @@ export class Month {
     id: number;                 //1-12 month number
     name: string;               //Name of the month
     numberOfDays: number;       //Number of days in the calendar month
+    year: number;
     dates: number[];            //Array of dates in the calendar month
     projects: ProjectMonth[];   //Array of project times for that month
 
-    constructor(monthNumber: number) {
+    constructor(monthNumber: number, year: number) {
         this.id = monthNumber;
+        this.year = year;
         this.calculateNameAndDays();
         this.projects = [];
         this.dates = [];
@@ -35,7 +37,10 @@ export class Month {
                 break;
             case 2:
                 this.name = "February";
-                this.numberOfDays = 29;     //TODO: Smarter leap year handling
+                if(this.year % 4 == 0)
+                    this.numberOfDays = 29;
+                else
+                    this.numberOfDays = 28;
                 break;
             case 3:
                 this.name = "March";

@@ -19,7 +19,6 @@ export class MonthViewComponent {
     @Input() user: User;
     private proxyUrl = "https://cors-anywhere.herokuapp.com/";
     public currentMonth: Month;
-    public currentYear: number;
     public round: boolean = true;
 
     private headers = new Headers();
@@ -27,10 +26,9 @@ export class MonthViewComponent {
     constructor(private http: Http) { }
 
     ngOnInit(): void {
-        this.currentMonth = new Month(new Date().getMonth() + 1);
-        this.currentYear = new Date().getFullYear();
+        this.currentMonth = new Month(new Date().getMonth() + 1, new Date().getFullYear());
         console.log("Current Month: " + this.currentMonth.id);
-        console.log("Current Year: " + this.currentYear);
+        console.log("Current Year: " + this.currentMonth.year);
         if (this.user != undefined && this.user.wid != undefined && this.user.api_token != undefined) {
             this.headers.append('Content-Type', 'application/json');
             this.headers.append('Authorization', ('Basic ' + btoa(this.user.api_token + ':' + 'api_token')));
@@ -39,6 +37,13 @@ export class MonthViewComponent {
                 .then(projects => this.user.projects = projects)
                 .then(() => this.processProjectData());
         }
+    }
+
+    setMonth(monthId: number) {
+        this.currentMonth = new Month(monthId, this.currentMonth.year);
+        this.getProjectData()
+            .then(projects => this.user.projects = projects)
+            .then(() => this.processProjectData());
     }
 
     getProjectData(): Promise<Project[]> {
@@ -55,19 +60,17 @@ export class MonthViewComponent {
             .catch(this.handleError);
     }
 
-    getStartDateString(): string{
-        return this.currentYear + "-" + this.currentMonth.getFullId() + "-01";
+    getStartDateString(): string {
+        return this.currentMonth.year + "-" + this.currentMonth.getFullId() + "-01";
     }
 
     getEndDateString(): string {
-        if(this.currentMonth.id == 12)
-        {
-            return (this.currentYear + 1) + "-" + "01" + "-01";
+        if (this.currentMonth.id == 12) {
+            return (this.currentMonth.year + 1) + "-" + "01" + "-01";
         }
-        else
-        {
-            let nextMonth = new Month(this.currentMonth.id + 1);
-            return this.currentYear + "-" + nextMonth.getFullId() + "-01";
+        else {
+            let nextMonth = new Month(this.currentMonth.id + 1, this.currentMonth.year);
+            return this.currentMonth.year + "-" + nextMonth.getFullId() + "-01";
         }
     }
 
@@ -115,8 +118,7 @@ export class MonthViewComponent {
         for (let project of this.currentMonth.projects) {
             total = total + project.days[day - 1].hours;
         }
-        if(this.round)
-        {
+        if (this.round) {
             total = this.getHoursRounded(total);
         }
         return total;
@@ -127,8 +129,7 @@ export class MonthViewComponent {
         for (let project of this.currentMonth.projects) {
             total = total + project.getTotalHours();
         }
-        if(this.round)
-        {
+        if (this.round) {
             total = this.getHoursRounded(total);
         }
         return total;

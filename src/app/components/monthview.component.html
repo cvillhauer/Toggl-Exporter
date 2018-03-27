@@ -1,21 +1,38 @@
 <div *ngIf="user.api_token">
-    <h3>{{ currentMonth.name }}</h3>
-    <p><input type="checkbox" [checked]="round" (change)="round = !round" />Round values to the nearest quarter hour</p>
+    <p>
+        <button (click)="setMonth(1)">January</button>
+        <button (click)="setMonth(2)">February</button>
+        <button (click)="setMonth(3)">March</button>
+        <button (click)="setMonth(4)">April</button>
+        <button (click)="setMonth(5)">May</button>
+        <button (click)="setMonth(6)">June</button>
+        <button (click)="setMonth(7)">July</button>
+        <button (click)="setMonth(8)">August</button>
+        <button (click)="setMonth(9)">September</button>
+        <button (click)="setMonth(10)">October</button>
+        <button (click)="setMonth(11)">November</button>
+        <button (click)="setMonth(12)">December</button>
+    </p>
+    <h3>{{ currentMonth.name }} {{ currentMonth.year }}</h3>
+    <p>
+        <input type="checkbox" [checked]="round" (change)="round = !round" />Round values to the nearest quarter hour</p>
     <table *ngIf="currentMonth.projects.length > 0">
         <th>Project</th>
         <th *ngFor="let date of currentMonth.dates">{{ date }}</th>
         <th>TOTAL</th>
         <tr *ngFor="let project of filterEmptyProjects()">
-            <td [style.background-color]="project.color">{{ project.description }}</td>
+            <td *ngIf="project.color == '#000000'" [style.background-color]="project.color" style="color: #FFFFFF;">{{ project.description }}</td>
+            <td *ngIf="project.color != '#000000'" [style.background-color]="project.color">{{ project.description }}</td>
             <td *ngFor="let day of project.days">
                 <span *ngIf="day.hours == 0">&nbsp;</span>
                 <span *ngIf="day.hours > 0 && round">{{ day.getHoursRounded() | number : '1.2-2' }}</span>
-                <span *ngIf="day.hours > 0 && !round">{{ day.hours | number : '1.2-2' }}</span></td>
+                <span *ngIf="day.hours > 0 && !round">{{ day.hours | number : '1.2-2' }}</span>
+            </td>
             <td *ngIf="round">{{ project.getHoursRounded() | number : '1.2-2' }}</td>
             <td *ngIf="!round">{{ project.getTotalHours() | number : '1.2-2' }}</td>
         </tr>
         <tr>
-            <td>TOTAL</td>
+            <td><b>TOTAL</b></td>
             <td *ngFor="let date of currentMonth.dates">{{ getDayTotal(date) | number : '1.2-2' }}</td>
             <td>{{ getMonthTotal() | number : '1.2-2' }}</td>
         </tr>
