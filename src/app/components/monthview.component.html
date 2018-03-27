@@ -3,11 +3,18 @@
     <table *ngIf="currentMonth.projects">
         <th>Project</th>
         <th *ngFor="let date of currentMonth.dates">{{ date }}</th>
+        <th>TOTAL</th>
         <tr *ngFor="let project of filterEmptyProjects()">
             <td [style.background-color]="project.color">{{ project.description }}</td>
             <td *ngFor="let day of project.days">
                 <span *ngIf="day.hours == 0">&nbsp;</span>
-                <span *ngIf="day.hours > 0">{{ day.hours | number : '1.2-2' }}</span></td>
+                <span *ngIf="day.hours > 0">{{ day.getHoursRounded() | number : '1.2-2' }}</span></td>
+            <td>{{ project.getTotalHoursRounded() | number : '1.2-2' }}</td>
+        </tr>
+        <tr>
+            <td>TOTAL</td>
+            <td *ngFor="let date of currentMonth.dates">{{ getDayTotal(date) | number : '1.2-2' }}</td>
+            <td>{{ getMonthTotal() }}</td>
         </tr>
     </table>
 </div>

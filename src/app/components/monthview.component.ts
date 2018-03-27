@@ -35,11 +35,6 @@ export class MonthViewComponent {
             this.getProjectData()
                 .then(projects => this.user.projects = projects)
                 .then(() => this.processProjectData());
-
-            //TODO: Am I chaining up promises correctly?
-            //this.getTimeData()
-            //.then(timeEntries => this.user.timeEntries = timeEntries)
-            //.then(() => this.processTimeData());
         }
     }
 
@@ -51,6 +46,8 @@ export class MonthViewComponent {
     }
 
     getTimeData(): Promise<TimeEntry[]> {
+        //TODO March is hard-coded
+        //TODO 2018 is hard-coded
         return this.http.get(this.proxyUrl + "https://www.toggl.com/api/v8/time_entries?start_date=2018-03-01T00%3A00%3A00%2B00%3A00&end_date=2018-04-01T00%3A00%3A00%2B00%3A00", { headers: this.headers })
             .toPromise()
             .then(response => response.json() as TimeEntry[])
@@ -94,6 +91,29 @@ export class MonthViewComponent {
 
     filterEmptyProjects(): ProjectMonth[] {
         return this.currentMonth.projects.filter(x => x.getTotalHours() > 0);
+    }
+
+    getDayTotal(day: number): number {
+        let total: number = 0;
+        for(let project of this.filterEmptyProjects())
+        {
+            total = total + project.days[day - 1].hours;
+        }
+        //TODO: Put rounding somewhere that all my classes can access
+        let minutes = (Math.round((total * 60)/15) * 15) % 60; //Gives me 0, 15, 30, or 45
+        total = Math.floor(total) + (minutes/60);
+        return total;
+    }
+
+    getMonthTotal(): number {
+        let total: number = 0;
+        for(let project of this.filterEmptyProjects())
+        {
+            total = total + project.getTotalHours();
+        }
+        let minutes = (Math.round((total * 60)/15) * 15) % 60; //Gives me 0, 15, 30, or 45
+        total = Math.floor(total) + (minutes/60);
+        return total;
     }
 
 }

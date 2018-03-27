@@ -6,4 +6,11 @@ export class ProjectDay {
         this.date = date;
         this.hours = hours;
     }
+
+    getHoursRounded(): number {
+        let hours: number = this.hours;
+        let minutes = (Math.round((hours * 60)/15) * 15) % 60; //Gives me 0, 15, 30, or 45
+        hours = Math.floor(hours) + (minutes/60);
+        return hours;
+    }
 }

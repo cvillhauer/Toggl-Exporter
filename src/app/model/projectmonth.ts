@@ -25,4 +25,12 @@ export class ProjectMonth {
         }
         return total;
     }
+
+    getTotalHoursRounded(): number{
+        let total: number = 0;
+        total = this.getTotalHours();
+        let minutes = (Math.round((total * 60)/15) * 15) % 60; //Gives me 0, 15, 30, or 45
+        total = Math.floor(total) + (minutes/60);
+        return total;
+    }
 }
