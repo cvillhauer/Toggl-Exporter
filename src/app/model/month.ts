@@ -18,6 +18,15 @@ export class Month {
         }
     }
 
+    getFullId(): string {
+        let monthId: string = this.id.toString();
+        if(this.id < 10)
+        {
+            monthId = "0" + monthId;
+        }
+        return monthId;
+    }
+
     calculateNameAndDays() {
         switch (this.id) {
             case 1:

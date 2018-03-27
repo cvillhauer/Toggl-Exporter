@@ -1,7 +1,7 @@
 <div *ngIf="user.api_token">
     <h3>{{ currentMonth.name }}</h3>
     <p><input type="checkbox" [checked]="round" (change)="round = !round" />Round values to the nearest quarter hour</p>
-    <table *ngIf="currentMonth.projects">
+    <table *ngIf="currentMonth.projects.length > 0">
         <th>Project</th>
         <th *ngFor="let date of currentMonth.dates">{{ date }}</th>
         <th>TOTAL</th>
@@ -20,4 +20,5 @@
             <td>{{ getMonthTotal() | number : '1.2-2' }}</td>
         </tr>
     </table>
+    <p *ngIf="filterEmptyProjects().length == 0">Loading...</p>
 </div>

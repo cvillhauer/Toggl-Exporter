@@ -19,6 +19,7 @@ export class MonthViewComponent {
     @Input() user: User;
     private proxyUrl = "https://cors-anywhere.herokuapp.com/";
     public currentMonth: Month;
+    public currentYear: number;
     public round: boolean = true;
 
     private headers = new Headers();
@@ -26,9 +27,10 @@ export class MonthViewComponent {
     constructor(private http: Http) { }
 
     ngOnInit(): void {
-        //TODO: March is hard-coded
-        this.currentMonth = new Month(3);
-
+        this.currentMonth = new Month(new Date().getMonth() + 1);
+        this.currentYear = new Date().getFullYear();
+        console.log("Current Month: " + this.currentMonth.id);
+        console.log("Current Year: " + this.currentYear);
         if (this.user != undefined && this.user.wid != undefined && this.user.api_token != undefined) {
             this.headers.append('Content-Type', 'application/json');
             this.headers.append('Authorization', ('Basic ' + btoa(this.user.api_token + ':' + 'api_token')));
@@ -47,12 +49,26 @@ export class MonthViewComponent {
     }
 
     getTimeData(): Promise<TimeEntry[]> {
-        //TODO March is hard-coded
-        //TODO 2018 is hard-coded
-        return this.http.get(this.proxyUrl + "https://www.toggl.com/api/v8/time_entries?start_date=2018-03-01T00%3A00%3A00%2B00%3A00&end_date=2018-04-01T00%3A00%3A00%2B00%3A00", { headers: this.headers })
+        return this.http.get(this.proxyUrl + "https://www.toggl.com/api/v8/time_entries?start_date=" + this.getStartDateString() + "T00%3A00%3A00%2B00%3A00&end_date=" + this.getEndDateString() + "T00%3A00%3A00%2B00%3A00", { headers: this.headers })
             .toPromise()
             .then(response => response.json() as TimeEntry[])
             .catch(this.handleError);
+    }
+
+    getStartDateString(): string{
+        return this.currentYear + "-" + this.currentMonth.getFullId() + "-01";
+    }
+
+    getEndDateString(): string {
+        if(this.currentMonth.id == 12)
+        {
+            return (this.currentYear + 1) + "-" + "01" + "-01";
+        }
+        else
+        {
+            let nextMonth = new Month(this.currentMonth.id + 1);
+            return this.currentYear + "-" + nextMonth.getFullId() + "-01";
+        }
     }
 
     processProjectData(): void {
