@@ -26,11 +26,10 @@ export class ProjectMonth {
         return total;
     }
 
-    getTotalHoursRounded(): number{
-        let total: number = 0;
-        total = this.getTotalHours();
-        let minutes = (Math.round((total * 60)/15) * 15) % 60; //Gives me 0, 15, 30, or 45
-        total = Math.floor(total) + (minutes/60);
-        return total;
+    getHoursRounded(): number {
+        let hours: number = this.getTotalHours() * 60 * 60; //Convert hours to seconds
+        hours = Math.round(hours / 900); //900 seconds in a 15-minute period
+        hours = hours / 4; //4 15-minute periods in an hour
+        return hours;
     }
 }

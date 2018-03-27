@@ -19,6 +19,7 @@ export class MonthViewComponent {
     @Input() user: User;
     private proxyUrl = "https://cors-anywhere.herokuapp.com/";
     public currentMonth: Month;
+    public round: boolean = true;
 
     private headers = new Headers();
 
@@ -95,25 +96,34 @@ export class MonthViewComponent {
 
     getDayTotal(day: number): number {
         let total: number = 0;
-        for(let project of this.filterEmptyProjects())
-        {
+        for (let project of this.currentMonth.projects) {
             total = total + project.days[day - 1].hours;
         }
-        //TODO: Put rounding somewhere that all my classes can access
-        let minutes = (Math.round((total * 60)/15) * 15) % 60; //Gives me 0, 15, 30, or 45
-        total = Math.floor(total) + (minutes/60);
+        if(this.round)
+        {
+            total = this.getHoursRounded(total);
+        }
         return total;
     }
 
     getMonthTotal(): number {
         let total: number = 0;
-        for(let project of this.filterEmptyProjects())
-        {
+        for (let project of this.currentMonth.projects) {
             total = total + project.getTotalHours();
         }
-        let minutes = (Math.round((total * 60)/15) * 15) % 60; //Gives me 0, 15, 30, or 45
-        total = Math.floor(total) + (minutes/60);
+        if(this.round)
+        {
+            total = this.getHoursRounded(total);
+        }
         return total;
+    }
+
+    //TODO Put this somewhere that ProjectMonth and ProjectDay can use too
+    getHoursRounded(hours: number): number {
+        hours = hours * 60 * 60; //Convert hours to seconds
+        hours = Math.round(hours / 900); //900 seconds in a 15-minute period
+        hours = hours / 4; //4 15-minute periods in an hour
+        return hours;
     }
 
 }

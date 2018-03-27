@@ -1,5 +1,6 @@
 <div *ngIf="user.api_token">
     <h3>{{ currentMonth.name }}</h3>
+    <p><input type="checkbox" [checked]="round" (change)="round = !round" />Round values to the nearest quarter hour</p>
     <table *ngIf="currentMonth.projects">
         <th>Project</th>
         <th *ngFor="let date of currentMonth.dates">{{ date }}</th>
@@ -8,13 +9,15 @@
             <td [style.background-color]="project.color">{{ project.description }}</td>
             <td *ngFor="let day of project.days">
                 <span *ngIf="day.hours == 0">&nbsp;</span>
-                <span *ngIf="day.hours > 0">{{ day.getHoursRounded() | number : '1.2-2' }}</span></td>
-            <td>{{ project.getTotalHoursRounded() | number : '1.2-2' }}</td>
+                <span *ngIf="day.hours > 0 && round">{{ day.getHoursRounded() | number : '1.2-2' }}</span>
+                <span *ngIf="day.hours > 0 && !round">{{ day.hours | number : '1.2-2' }}</span></td>
+            <td *ngIf="round">{{ project.getHoursRounded() | number : '1.2-2' }}</td>
+            <td *ngIf="!round">{{ project.getTotalHours() | number : '1.2-2' }}</td>
         </tr>
         <tr>
             <td>TOTAL</td>
             <td *ngFor="let date of currentMonth.dates">{{ getDayTotal(date) | number : '1.2-2' }}</td>
-            <td>{{ getMonthTotal() }}</td>
+            <td>{{ getMonthTotal() | number : '1.2-2' }}</td>
         </tr>
     </table>
 </div>

@@ -8,9 +8,9 @@ export class ProjectDay {
     }
 
     getHoursRounded(): number {
-        let hours: number = this.hours;
-        let minutes = (Math.round((hours * 60)/15) * 15) % 60; //Gives me 0, 15, 30, or 45
-        hours = Math.floor(hours) + (minutes/60);
+        let hours: number = this.hours * 60 * 60; //Convert hours to seconds
+        hours = Math.round(hours / 900); //900 seconds in a 15-minute period
+        hours = hours / 4; //4 15-minute periods in an hour
         return hours;
     }
 }
